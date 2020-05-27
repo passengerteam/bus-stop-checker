@@ -1,6 +1,6 @@
-#!/usr/bin/env node
+'use strict';
 
-const math = require('mathjs');
+import * as math from 'mathjs';
 
 const bearingToDegress = {
     N: 0,
@@ -14,12 +14,12 @@ const bearingToDegress = {
 };
 
 // Converts from degrees to radians
-var radians = function(degrees) {
+let radians = function(degrees) {
     return degrees * (Math.PI / 180);
 };
 
 // Converts from radians to degrees.
-var degrees = function(radians) {
+let degrees = function(radians) {
     return radians * (180 / Math.PI);
 };
 
@@ -47,32 +47,32 @@ function getBearing(pointA, pointB, inDegrees = false) {
 
 
 function crossProductSign(a, b, c) {
-    let d = (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0])
+    let d = (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0]);
     return d;
 }
 
 function degreesToCompass(angle) {
-    var directions = 8;
+    let directions = 8;
 
-    var degree = 360 / directions;
+    let degree = 360 / directions;
     angle = angle + degree / 2;
 
     if (angle >= 0 * degree && angle < 1 * degree)
-        return "N";
+        return 'N';
     if (angle >= 1 * degree && angle < 2 * degree)
-        return "NE";
+        return 'NE';
     if (angle >= 2 * degree && angle < 3 * degree)
-        return "E";
+        return 'E';
     if (angle >= 3 * degree && angle < 4 * degree)
-        return "SE";
+        return 'SE';
     if (angle >= 4 * degree && angle < 5 * degree)
-        return "S";
+        return 'S';
     if (angle >= 5 * degree && angle < 6 * degree)
-        return "SW";
+        return 'SW';
     if (angle >= 6 * degree && angle < 7 * degree)
-        return "W";
+        return 'W';
     if (angle >= 7 * degree && angle < 8 * degree)
-        return "NW";
+        return 'NW';
     return '';
 }
 
@@ -111,16 +111,15 @@ function pointDistanceFromLine(x, y, x1, y1, x2, y2) {
 }
 
 function getRoadBearing(nodeA, nodeB, stop) {
-    let stopCoordinates = [stop.Latitude, stop.Longitude];
+    let stopCoordinates = [stop.getLatitude(), stop.getLongitude()];
 
     let roadBearing = getBearing(nodeA, nodeB, true);
-
 
     // keep road_bearing within range 0-180
     if (roadBearing > 180) {
         roadBearing = roadBearing - 180;
-        var swap = function(x) {
-            return x
+        let swap = function(x) {
+            return x;
         };
         nodeB = swap(nodeA, nodeA = nodeB);
     }
@@ -131,17 +130,16 @@ function getRoadBearing(nodeA, nodeB, stop) {
         roadBearing = roadBearing + 180;
     }
 
-
     return roadBearing;
 }
 
 
-module.exports = {
-    bearingToDegress: bearingToDegress,
-    getBearing: getBearing,
-    crossProductSign: crossProductSign,
-    degreesToCompass: degreesToCompass,
-    differenceBetweenBearings: differenceBetweenBearings,
-    pointDistanceFromLine: pointDistanceFromLine,
-    getRoadBearing: getRoadBearing,
+export {
+    bearingToDegress,
+    getBearing,
+    crossProductSign,
+    degreesToCompass,
+    differenceBetweenBearings,
+    pointDistanceFromLine,
+    getRoadBearing
 };
