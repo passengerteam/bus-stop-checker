@@ -1,0 +1,39 @@
+version: '3.5'
+
+services:
+  bsc_postgres:
+    container_name: bsc_postgres
+    image: postgres:11-alpine
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      - POSTGRES_USER=${PGUSER}
+      - POSTGRES_PASSWORD=${PGPASSWORD}
+      - POSTGRES_DB=${PGDATABASE}
+    volumes:
+      - bsc_postgres:/var/lib/postgresql/data:z,delegated
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+  bsc_osrm:
+    container_name: bsc_osrm
+    build:
+          context: ./osrm
+    volumes:
+      - ./:/data
+    user: ${USER}:${GROUP}
+  bsc_nodejs:
+    container_name: bsc_nodejs
+    build:
+          context: ./
+    volumes:
+      - ./:/app
+    user: ${USER}:${GROUP}
+    environment:
+      - PGHOST=${PGHOST}
+      - PGUSER=${PGUSER}
+      - PGPASSWORD=${PGPASSWORD}
+      - PGDATABASE=${PGDATABASE}
+    links:
+      - bsc_postgres
+volumes:
+  bsc_postgres:

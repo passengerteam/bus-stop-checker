@@ -1,0 +1,21 @@
+message Verification {
+	required string name = 1;
+	required float latitude = 2;
+	required float longitude = 3;
+	optional string bearing = 4;
+	optional string street = 5;
+	optional string osmStreet = 6;
+	required int32 confidence_is_correct = 7;
+	optional string roadBearing = 8;
+	optional float difference = 9;
+	optional float distance_from_road = 10;
+	optional int32 admin_area = 11;
+	optional string common_name = 12;
+	optional string locality = 13;
+	optional float osm_node_a_lat = 14;
+	optional float osm_node_a_lon = 15;
+	optional int64 osm_node_a_id = 16;
+	optional float osm_node_b_lat = 17;
+	optional float osm_node_b_lon = 18;
+	optional int64 osm_node_b_id = 19;
+}
